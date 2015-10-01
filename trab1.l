@@ -18,7 +18,9 @@ PALAVRA_RESERVADA_SENAO "senao"
 PALAVRA_RESERVADA_FIMSE "fim-se"
 PALAVRA_RESERVADA_MATRIZ "matriz"
 PALAVRA_RESERVADA_DE "de"
-PALAVRA_RESERVADA "verdadeiro"|"falso"|"ou"|"e"|"nao"|"enquanto"|"faca"|"fim-enquanto"|"para"|"ate"|"fim-para"|"funcao"|"retorne"|"passo"
+PALAVRA_RESERVADA_VERDADEIRO "verdadeiro"
+PALAVRA_RESERVADA_FALSO "falso"
+PALAVRA_RESERVADA "enquanto"|"faca"|"fim-enquanto"|"para"|"ate"|"fim-para"|"funcao"|"retorne"|"passo"
 IDENTIFICADOR {CHAR}("_"|{CHAR}|{INTEIRO})*
 INTEIRO [0-9]
 CHAR [a-zA-Z]
@@ -31,12 +33,21 @@ TIPO_INTEIRO "inteiro"
 TIPO_CARACTERE "caractere"
 TIPO_LITERAL "literal"
 TIPO_LOGICO "logico"
-OPERADOR_ARITMETICO "^"|"%"|"++"|"--"
+OPERADOR_ARITMETICO "^"|"++"|"--"
+OPERADOR_PORCENTO "%"
 OPERADOR_MAIS "+"
 OPERADOR_MENOS "-"
 OPERADOR_VEZES "*"
 OPERADOR_DIVIDIR "/"
-OPERADOR_RELACIONAL ">"|">="|"<"|"<="|"=="|"<>"
+OPERADOR_MAIOR ">"
+OEPRADOR_MAIORIGUAL ">="
+OPERADOR_MENOR "<"
+OPERADOR_MENORIGUAL "<="
+OPERADOR_IGUALIGUAL "=="
+OPERADOR_DIFERENTE "<>"
+OPERADOR_E "e"
+OPERADOR_OU "ou"
+OPERADOR_NAO "nao"
 SIMBOLO_PONTOVIRGULA ";"
 SIMBOLO_DOISPONTOS ":"
 SIMBOLO_VIRGULA ","
@@ -78,14 +89,25 @@ LITERAL "\""[^"]*"\""
 {PALAVRA_RESERVADA_FIMSE}   {return token_fimSe;}
 {PALAVRA_RESERVADA_MATRIZ}  {return token_tipoMatriz;}
 {PALAVRA_RESERVADA_DE}      {return token_de;}
+{PALAVRA_RESERVADA_FALSO}   {return token_falso;}
+{PALAVRA_RESERVADA_VERDADEIRO} {return token_verdadeiro;}
 {PALAVRA_RESERVADA}         {return token_palavraReservada;}
 {ATRIBUICAO}                {return token_atribuicao;}
 {OPERADOR_MAIS}             {return token_operadorMais;}
 {OPERADOR_MENOS}            {return token_operadorMenos;}
 {OPERADOR_VEZES}            {return token_operadorVezes;}
 {OPERADOR_DIVIDIR}          {return token_operadorDividir;}
+{OPERADOR_PORCENTO}         {return token_porcento;}
 {OPERADOR_ARITMETICO}       {return token_operadorAritmetico;}
-{OPERADOR_RELACIONAL}       {return token_operadorRelacional;}
+{OEPRADOR_MAIORIGUAL}       {return token_maiorIgual;}
+{OPERADOR_MENORIGUAL}       {return token_menorIgual;}
+{OPERADOR_MAIOR}            {return token_maior;}
+{OPERADOR_MENOR}            {return token_menor;}
+{OPERADOR_IGUALIGUAL}       {return token_igualIgual;}
+{OPERADOR_E}                {return token_e;}
+{OPERADOR_OU}               {return token_ou;}
+{OPERADOR_NAO}              {return token_nao;}
+{OPERADOR_DIFERENTE}        {return token_diferente;}
 {SIMBOLO_PONTOVIRGULA}      {return token_pontoVirgula;}
 {SIMBOLO_DOISPONTOS}        {return token_doisPontos;}
 {SIMBOLO_VIRGULA}           {return token_virgula;}
