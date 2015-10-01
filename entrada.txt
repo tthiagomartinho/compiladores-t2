@@ -1,0 +1,11 @@
+algoritmo teste;
+
+variaveis
+    m1 : matriz[3] de inteiro;
+fim-variaveis
+
+
+inicio
+    x = 2 + a * 2+3/10;
+    y = triste ou x == (vida e bela == 7) + 7;
+fim
