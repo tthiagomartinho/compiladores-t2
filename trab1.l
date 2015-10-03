@@ -104,6 +104,8 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_VERDADEIRO}          {return token_verdadeiro;}
 {PA_RE_FALSO}               {return token_falso;}
 {PA_RE_ENQUANTO}            {return token_enquanto;}
+{PA_RE_FACA}                {return token_faca;}
+{PA_RE_FIM_ENQUANTO}        {return token_fimEnquanto;}
 {PA_RE_PARA}                {return token_para;}
 {PA_RE_ATE}                 {return token_ate;}
 {PA_RE_FIM_PARA}            {return token_fimPara;}
@@ -155,8 +157,8 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 
 
 [ \t]                       ; /* sao ignorados */
-.                           {}
 [\n]                        line_num++;
+.                           {}
 
 
 <comment>([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/ { /*procura por qualquer coisa que termine com final de comentario */

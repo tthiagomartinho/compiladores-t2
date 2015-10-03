@@ -7,5 +7,27 @@ fim-variaveis
 
 inicio
     x = 2 + a * 8;
-    y = triste ou x == (vida e bela == 7) + 7;
+    y = triste ou x  == (vida e bela == 7) + 7;
+
+    enquanto x == 2 faca
+    	x = 2 + 3;
+    	x = 2 + 3;
+    	x = 2 + 3;
+    	x = 2 + 3;
+    	enquanto x == 2 faca
+    		se x > y entao
+    			k = verdadeiro ou ~(p e q);
+    			w = "a vida eh bela";
+    		senao
+    			se x < y entao
+    				j = j++;
+    				w = "a vida eh mais que bela";
+    			senao
+    				j = j--;
+    				w = "a vida nao eh bela";
+    				imprime(1 : inteiro, 2 : real, "inglaterra" : literal, 'a' : caractere, a : matriz[1][1] de inteiro);
+    			fim-se
+   			fim-se
+   		fim-enquanto
+   	fim-enquanto
 fim

@@ -76,85 +76,137 @@
 
 %%
 
-ALGORITMO: token_algoritmo token_identificador token_simboloPontoVirgula PROGRAMA
+ALGORITMO
+    : token_algoritmo token_identificador token_simboloPontoVirgula PROGRAMA
 ;
 
-PROGRAMA: VARIAVEIS
-         | PROGRAMA_PRINCIPAL
+PROGRAMA
+    : VARIAVEIS
+    | PROGRAMA_PRINCIPAL
 ;
 
-VARIAVEIS: token_variaveis VARIAVEL
-;
-
-PROGRAMA_PRINCIPAL : token_inicio COMANDOS
-;
-
-COMANDOS: ATRIBUICAO COMANDOS
-       | token_fim
-;
-
-TIPO_VARIAVEL: token_tipoMatriz MATRIZ
-              | TIPO_VARIAVEL_PRIMITIVO
-;
-
-TIPO_VARIAVEL_PRIMITIVO: token_tipoReal
-              | token_tipoInteiro
-              | token_tipoCaractere
-              | token_tipoLiteral
-              | token_tipoLogico 
-;
-
-MATRIZ: token_simboloAbreColchete token_inteiro token_simboloFechaColchete MATRIZ
-        | token_simboloAbreColchete token_inteiro token_simboloFechaColchete token_de TIPO_VARIAVEL_PRIMITIVO
-;
-
-VARIAVEL: token_identificador token_simboloVirgula VARIAVEL
-         | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula VARIAVEL
-         | token_identificador token_simboloVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
-         | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
-;
-
-ATRIBUICAO: token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA token_simboloPontoVirgula
+VARIAVEIS
+    : token_variaveis VARIAVEL
 ;
 
 
-NUMERO: token_real
-        | token_inteiro
+TIPO_VARIAVEL
+    : token_tipoMatriz MATRIZ
+    | TIPO_VARIAVEL_PRIMITIVO
 ;
 
-EXPRESSAO_COMPLETA: EXPRESSAO
-            | EXPRESSAO token_operadorDiferente EXPRESSAO
-            | EXPRESSAO token_operadorMenor EXPRESSAO
-            | EXPRESSAO token_operadorMenorIgual EXPRESSAO
-            | EXPRESSAO token_operadorMaior EXPRESSAO
-            | EXPRESSAO token_operadorMaiorIgual EXPRESSAO
+TIPO_VARIAVEL_PRIMITIVO
+    : token_tipoReal
+    | token_tipoInteiro
+    | token_tipoCaractere
+    | token_tipoLiteral
+    | token_tipoLogico 
 ;
 
-EXPRESSAO: EXPRESSAO token_operadorMais TERMO
-          | EXPRESSAO token_operadorMenos TERMO
-          | EXPRESSAO token_operadorOu TERMO
-          | TERMO
+MATRIZ
+    : token_simboloAbreColchete token_inteiro token_simboloFechaColchete MATRIZ
+    | token_simboloAbreColchete token_inteiro token_simboloFechaColchete token_de TIPO_VARIAVEL_PRIMITIVO
 ;
 
-TERMO: TERMO token_operadorVezes FATOR
-      | TERMO token_operadorDividir FATOR
-      | TERMO token_operadorE FATOR
-      | TERMO token_operadorPorcento FATOR
-      | TERMO token_operadorIgualIgual FATOR
-      | TERMO token_operadorPotencia FATOR
-      | FATOR
+VARIAVEL
+    : token_identificador token_simboloVirgula VARIAVEL
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula VARIAVEL
+    | token_identificador token_simboloVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
 ;
 
-FATOR: NUMERO
-      | CONSTANTES_LOGICA
-      | token_identificador
-      | token_operadorNao token_identificador
-      | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
-      | token_operadorNao token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
+PROGRAMA_PRINCIPAL: token_inicio COMANDOS token_fim
 ;
 
-CONSTANTES_LOGICA: token_verdadeiro
-        | token_falso
+COMANDOS
+    : COMANDO_ATRIBUICAO COMANDOS
+    | COMANDO_ENQUANTO COMANDOS
+    | COMANDO_SE COMANDOS
+    | COMANDO_FUNCAO token_simboloPontoVirgula
+    |
+;
+
+COMANDO_ATRIBUICAO
+    : token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA token_simboloPontoVirgula
+;
+
+COMANDO_ENQUANTO
+    : token_enquanto EXPRESSAO_COMPLETA token_faca COMANDOS token_fimEnquanto
+;
+
+COMANDO_SE
+    : token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_senao COMANDOS token_fimSe
+    | token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_fimSe
+;
+
+COMANDO_FUNCAO
+    : token_identificador token_simboloAbreParentese COMANDO_FUNCAO token_simboloFechaParentese
+    | token_identificador token_simboloAbreParentese PARAMETRO_FUNCAO token_simboloFechaParentese
+    | token_identificador token_simboloAbreParentese token_simboloFechaParentese
+;
+
+PARAMETRO_FUNCAO
+    : EXPRESSAO_COMPLETA token_simboloDoisPontos TIPO_VARIAVEL token_simboloVirgula PARAMETRO_FUNCAO
+    | EXPRESSAO_COMPLETA token_simboloDoisPontos TIPO_VARIAVEL
+;
+
+NUMERO
+    : token_real
+    | token_inteiro
+;
+
+EXPRESSAO_COMPLETA
+    : EXPRESSAO
+    | EXPRESSAO token_operadorDiferente EXPRESSAO
+    | EXPRESSAO token_operadorMenor EXPRESSAO
+    | EXPRESSAO token_operadorMenorIgual EXPRESSAO
+    | EXPRESSAO token_operadorMaior EXPRESSAO
+    | EXPRESSAO token_operadorMaiorIgual EXPRESSAO
+;
+
+EXPRESSAO
+    : EXPRESSAO token_operadorMais TERMO
+    | EXPRESSAO token_operadorMenos TERMO
+    | EXPRESSAO token_operadorOu TERMO
+    | TERMO
+;
+
+TERMO
+    : TERMO token_operadorVezes FATOR
+    | TERMO token_operadorDividir FATOR
+    | TERMO token_operadorE FATOR
+    | TERMO token_operadorPorcento FATOR
+    | TERMO token_operadorIgualIgual FATOR
+    | TERMO token_operadorPotencia FATOR
+    | FATOR
+;
+
+FATOR
+    : NUMERO
+    | OPERADORES_MAIS_MAIS_MENOS_MENOS
+    | CONSTANTES_LOGICA
+    | token_literal
+    | token_caractere
+    | token_identificador
+    | token_operadorNao token_identificador
+    | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
+    | token_operadorNao token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
+;
+
+OPERADORES_MAIS_MAIS_MENOS_MENOS
+    : token_operadorSomaSoma NUMERO
+    | NUMERO token_operadorSomaSoma
+    | token_operadorSubtraiSubtrai NUMERO
+    | NUMERO token_operadorSubtraiSubtrai
+    | token_operadorSomaSoma token_identificador
+    | token_identificador token_operadorSomaSoma
+    | token_operadorSubtraiSubtrai token_identificador
+    | token_identificador token_operadorSubtraiSubtrai
+;
+
+CONSTANTES_LOGICA
+    : token_verdadeiro
+    | token_falso
 ;
 /*         
 EXPRESSAO: EXPRESSAO token_operadorMais TERMO
@@ -201,26 +253,7 @@ TERMOLOGICO_NAO: token_nao FATOR_LOGICO
 FATOR_LOGICO: token_identificador
        | token_abreParentese EXPRESSAOLOGICA token_fechaParentese
 
-
-
-/*
-COMANDO_IF: COMANDO_ASSOCIADO
-            | COMANDO_NAO_ASSOCIADO
-;
-
-COMANDO_ASSOCIADO: token_se EXPRESSAO token_entao COMANDO_ASSOCIADO token_senao COMANDO_ASSOCIADO
-                | COMANDOS_BASICOS
-;
-
-COMANDO_NAO_ASSOCIADO: token_se EXPRESSAO token_entao COMANDO_IF
-                        | token_se EXPRESSAO token_entao COMANDO_ASSOCIADO token_senao COMANDO_NAO_ASSOCIADO
-;
-
-COMANDOS_BASICOS: COMANDO_IF
-;
-
-LISTA_COMANDOS: COMANDOS_BASICOS
-                | COMANDO_NAO_ASSOCIADO*/
+*/
 
 %%
 
