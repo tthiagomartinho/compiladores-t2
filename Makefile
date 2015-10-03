@@ -1,7 +1,7 @@
 all: compila
 
 compila:
-	flex -i trab1.l
+	flex -i analisador_lexico.l
 	bison -v analisador_sintatico.y
 	gcc -otrab2 analisador_sintatico.tab.c -lfl
 

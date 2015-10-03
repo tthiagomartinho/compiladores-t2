@@ -19,15 +19,47 @@ inicio
     			k = verdadeiro ou ~(p e q);
     			w = "a vida eh bela";
     		senao
-    			se x < y entao
+    			se x <> y entao
     				j = j++;
     				w = "a vida eh mais que bela";
     			senao
     				j = j--;
+    				imprima
+    				(soma(3,2), 1 - 2, 5, "hello world", 7^5, 10^teste, multiplica(4,5));
+    				somatorio = soma(1, 2);
     				w = "a vida nao eh bela";
-    				imprime(1 : inteiro, 2 : real, "inglaterra" : literal, 'a' : caractere, a : matriz[1][1] de inteiro);
+    				imprime(1, 2 , "inglaterra", 'a', w);
     			fim-se
    			fim-se
    		fim-enquanto
    	fim-enquanto
+
+   	para x de fat ate 1 passo -1 faca
+		res = res * x;
+	fim-para
+
+	para x de fat ate 1 faca
+		res = res * x;
+	fim-para
+fim
+
+funcao soma(x : inteiro, y : inteiro) : inteiro 
+	res : inteiro;
+	string : literal;
+	k, w, z, r : inteiro;
+	mat : matriz[1][1][1][1][1] de inteiro;
+inicio
+	res = x + y;
+	retorne res;
+fim
+
+funcao soma() : inteiro 
+inicio
+	res = x + y;
+	retorne res;
+fim
+
+funcao soma() : inteiro 
+inicio
+	retorne;
 fim

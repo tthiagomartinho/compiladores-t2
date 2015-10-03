@@ -78,22 +78,22 @@
 
 ALGORITMO
     : token_algoritmo token_identificador token_simboloPontoVirgula PROGRAMA
-;
+    ;
 
 PROGRAMA
     : VARIAVEIS
     | PROGRAMA_PRINCIPAL
-;
+    ;
 
 VARIAVEIS
-    : token_variaveis VARIAVEL
-;
+    : token_variaveis DECLARACAO_VARIAVEL token_fimVariaveis PROGRAMA_PRINCIPAL
+    ;
 
 
 TIPO_VARIAVEL
     : token_tipoMatriz MATRIZ
     | TIPO_VARIAVEL_PRIMITIVO
-;
+    ;
 
 TIPO_VARIAVEL_PRIMITIVO
     : token_tipoReal
@@ -101,59 +101,94 @@ TIPO_VARIAVEL_PRIMITIVO
     | token_tipoCaractere
     | token_tipoLiteral
     | token_tipoLogico 
-;
+    ;
 
 MATRIZ
     : token_simboloAbreColchete token_inteiro token_simboloFechaColchete MATRIZ
     | token_simboloAbreColchete token_inteiro token_simboloFechaColchete token_de TIPO_VARIAVEL_PRIMITIVO
-;
+    ;
 
-VARIAVEL
-    : token_identificador token_simboloVirgula VARIAVEL
-    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula VARIAVEL
+DECLARACAO_VARIAVEL
+    : token_identificador token_simboloVirgula DECLARACAO_VARIAVEL
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula DECLARACAO_VARIAVEL
     | token_identificador token_simboloVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
-    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
-;
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula
+    ;
 
-PROGRAMA_PRINCIPAL: token_inicio COMANDOS token_fim
-;
+PROGRAMA_PRINCIPAL
+    : token_inicio COMANDOS token_fim
+    | token_inicio COMANDOS token_fim FUNCAO
+    ;
 
 COMANDOS
-    : COMANDO_ATRIBUICAO COMANDOS
+    : COMANDO_ATRIBUICAO token_simboloPontoVirgula COMANDOS
     | COMANDO_ENQUANTO COMANDOS
     | COMANDO_SE COMANDOS
-    | COMANDO_FUNCAO token_simboloPontoVirgula
+    | COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula COMANDOS
+    | COMANDO_PARA COMANDOS
     |
-;
+    ;
 
 COMANDO_ATRIBUICAO
-    : token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA token_simboloPontoVirgula
-;
+    : token_identificador token_operadorAtribuicao COMANDO_CHAMADA_FUNCAO
+    | token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA
+    ;
 
 COMANDO_ENQUANTO
     : token_enquanto EXPRESSAO_COMPLETA token_faca COMANDOS token_fimEnquanto
-;
+    ;
 
 COMANDO_SE
     : token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_senao COMANDOS token_fimSe
     | token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_fimSe
-;
+    ;
 
-COMANDO_FUNCAO
-    : token_identificador token_simboloAbreParentese COMANDO_FUNCAO token_simboloFechaParentese
-    | token_identificador token_simboloAbreParentese PARAMETRO_FUNCAO token_simboloFechaParentese
-    | token_identificador token_simboloAbreParentese token_simboloFechaParentese
-;
+COMANDO_PARA
+    : token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_passo NUMERO token_faca COMANDOS token_fimPara
+    | token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_faca COMANDOS token_fimPara
+    ;
 
-PARAMETRO_FUNCAO
-    : EXPRESSAO_COMPLETA token_simboloDoisPontos TIPO_VARIAVEL token_simboloVirgula PARAMETRO_FUNCAO
-    | EXPRESSAO_COMPLETA token_simboloDoisPontos TIPO_VARIAVEL
-;
+COMANDO_CHAMADA_FUNCAO
+    : token_identificador token_simboloAbreParentese token_simboloFechaParentese
+    | token_identificador token_simboloAbreParentese PARAMETRO_FUNCAO_CHAMADA_FUNCAO token_simboloFechaParentese
+    ;
+
+PARAMETRO_FUNCAO_CHAMADA_FUNCAO
+    : EXPRESSAO_COMPLETA token_simboloVirgula PARAMETRO_FUNCAO_CHAMADA_FUNCAO
+    | COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETRO_FUNCAO_CHAMADA_FUNCAO
+    | EXPRESSAO_COMPLETA
+    | COMANDO_CHAMADA_FUNCAO
+    ;
+
+FUNCAO
+    : DECLARACAO_FUNCAO FUNCAO
+    | DECLARACAO_FUNCAO
+    ;
+
+DECLARACAO_FUNCAO
+    : token_funcao ARGUMENTOS_DECLARACAO_FUNCAO token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO DECLARACAO_VARIAVEL token_inicio COMANDOS COMANDO_RETORNE token_fim
+    | token_funcao ARGUMENTOS_DECLARACAO_FUNCAO token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO token_inicio COMANDOS COMANDO_RETORNE token_fim
+    ;
+
+ARGUMENTOS_DECLARACAO_FUNCAO
+    : token_identificador token_simboloAbreParentese token_simboloFechaParentese
+    | token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese
+    ;
+
+PARAMETRO_DECLARACAO_FUNCAO
+    : token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloVirgula PARAMETRO_DECLARACAO_FUNCAO
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL
+    ;
+
+COMANDO_RETORNE
+    : token_retorne EXPRESSAO_COMPLETA token_simboloPontoVirgula COMANDOS
+    | token_retorne token_simboloPontoVirgula COMANDOS
+    ;
 
 NUMERO
     : token_real
     | token_inteiro
-;
+    ;
 
 EXPRESSAO_COMPLETA
     : EXPRESSAO
@@ -162,14 +197,14 @@ EXPRESSAO_COMPLETA
     | EXPRESSAO token_operadorMenorIgual EXPRESSAO
     | EXPRESSAO token_operadorMaior EXPRESSAO
     | EXPRESSAO token_operadorMaiorIgual EXPRESSAO
-;
+    ;
 
 EXPRESSAO
     : EXPRESSAO token_operadorMais TERMO
     | EXPRESSAO token_operadorMenos TERMO
     | EXPRESSAO token_operadorOu TERMO
     | TERMO
-;
+    ;
 
 TERMO
     : TERMO token_operadorVezes FATOR
@@ -179,7 +214,7 @@ TERMO
     | TERMO token_operadorIgualIgual FATOR
     | TERMO token_operadorPotencia FATOR
     | FATOR
-;
+    ;
 
 FATOR
     : NUMERO
@@ -191,7 +226,7 @@ FATOR
     | token_operadorNao token_identificador
     | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
     | token_operadorNao token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
-;
+    ;
 
 OPERADORES_MAIS_MAIS_MENOS_MENOS
     : token_operadorSomaSoma NUMERO
@@ -202,58 +237,12 @@ OPERADORES_MAIS_MAIS_MENOS_MENOS
     | token_identificador token_operadorSomaSoma
     | token_operadorSubtraiSubtrai token_identificador
     | token_identificador token_operadorSubtraiSubtrai
-;
+    ;
 
 CONSTANTES_LOGICA
     : token_verdadeiro
     | token_falso
-;
-/*         
-EXPRESSAO: EXPRESSAO token_operadorMais TERMO
-            | EXPRESSAO token_operadorMenos TERMO
-            | TERMO
-;
-
-TERMO: TERMO token_operadorVezes FATOR
-        | TERMO token_operadorDividir FATOR
-        | FATOR
-;
-
-FATOR: NUMERO
-        | token_identificador
-       | token_abreParentese EXPRESSAO token_fechaParentese
-;
-
-/*
-
-EXPRESSAOLOGICA: EXPRESSAOLOGICA token_ou TERMOLOGICO_E
-                | TERMOLOGICO_E
-;
-
-TERMOLOGICO_E: TERMOLOGICO_E token_e TERMOLOGICO_IGUAL_DIFERENTE
-               | TERMOLOGICO_IGUAL_DIFERENTE
-;
-
-TERMOLOGICO_IGUAL_DIFERENTE: TERMOLOGICO_IGUAL_DIFERENTE token_igualIgual TERMOLOGICO_RELACIONAL
-                TERMOLOGICO_IGUAL_DIFERENTE token_diferente TERMOLOGICO_RELACIONAL
-               | TERMOLOGICO_RELACIONAL
-;
-
-TERMOLOGICO_RELACIONAL: TERMOLOGICO_RELACIONAL token_maior TERMOLOGICO_NAO
-               | TERMOLOGICO_RELACIONAL token_maiorIgual TERMOLOGICO_NAO
-               | TERMOLOGICO_RELACIONAL token_menor TERMOLOGICO_NAO
-               | TERMOLOGICO_RELACIONAL token_menorIgual TERMOLOGICO_NAO
-               | TERMOLOGICO_NAO
-;
-
-TERMOLOGICO_NAO: token_nao FATOR_LOGICO
-                | FATOR_LOGICO
-;
-
-FATOR_LOGICO: token_identificador
-       | token_abreParentese EXPRESSAOLOGICA token_fechaParentese
-
-*/
+    ;
 
 %%
 
