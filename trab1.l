@@ -6,60 +6,77 @@
      
 %}
 
-/* definicao de digitios */
-ALGORITMO "algoritmo"
-VARIAVEIS "variaveis"
-FIM_VARIAVEIS "fim-variaveis"
-INICIO "inicio"
-FIM "fim"
-PALAVRA_RESERVADA_SE "se"
-PALAVRA_RESERVADA_ENTAO "entao"
-PALAVRA_RESERVADA_SENAO "senao"
-PALAVRA_RESERVADA_FIMSE "fim-se"
-PALAVRA_RESERVADA_MATRIZ "matriz"
-PALAVRA_RESERVADA_DE "de"
-PALAVRA_RESERVADA_VERDADEIRO "verdadeiro"
-PALAVRA_RESERVADA_FALSO "falso"
-PALAVRA_RESERVADA "enquanto"|"faca"|"fim-enquanto"|"para"|"ate"|"fim-para"|"funcao"|"retorne"|"passo"
+/* DEFINICOES BASICAS */
 IDENTIFICADOR {CHAR}("_"|{CHAR}|{INTEIRO})*
 INTEIRO [0-9]
 CHAR [a-zA-Z]
 REAL {INTEIRO}+"."{INTEIRO}+
 CARACTERE "'"{CHAR}"'"
-LOGICO "verdadeiro"|"falso"
-TIPO "real"|"inteiro"|"caractere"|"literal"|"logico"
+COMENTARIO_LINHA "//"(.)*
+LITERAL "\""[^"]*"\""
+
+/* PARALVRAS RESERVADAS */
+PA_RE_ALGORITMO "algoritmo"
+PA_RE_VARIAVEIS "variaveis"
+PA_RE_FIM_VARIAVEIS "fim-variaveis"
+PA_RE_INICIO "inicio"
+PA_RE_FIM "fim"
+PA_RE_SE "se"
+PA_RE_ENTAO "entao"
+PA_RE_SENAO "senao"
+PA_RE_FIMSE "fim-se"
+PA_RE_DE "de"
+PA_RE_VERDADEIRO "verdadeiro"
+PA_RE_FALSO "falso"
+PA_RE_ENQUANTO "enquanto"
+PA_RE_FACA "faca"
+PA_RE_FIM_ENQUANTO "fim-enquanto"
+PA_RE_PARA "para"
+PA_RE_ATE "ate"
+PA_RE_FIM_PARA "fim-para"
+PA_RE_FUNCAO "funcao"
+PA_RE_RETORNE "retorne"
+PA_RE_PASSO "passo"
+
+/* TIPOS DE DADOS */
 TIPO_REAL "real"
 TIPO_INTEIRO "inteiro"
 TIPO_CARACTERE "caractere"
 TIPO_LITERAL "literal"
 TIPO_LOGICO "logico"
-OPERADOR_ARITMETICO "^"|"++"|"--"
+TIPO_MATRIZ "matriz"
+
+/* OPERADORES*/
+OPERADOR_ATRIBUICAO "="
+OPERADOR_POTENCIA "^"
+OPERADOR_SOMA_SOMA "++"
+OPERADOR_SUBTRAI_SUBTRAI "--"
 OPERADOR_PORCENTO "%"
 OPERADOR_MAIS "+"
 OPERADOR_MENOS "-"
 OPERADOR_VEZES "*"
 OPERADOR_DIVIDIR "/"
 OPERADOR_MAIOR ">"
-OEPRADOR_MAIORIGUAL ">="
+OEPRADOR_MAIOR_IGUAL ">="
 OPERADOR_MENOR "<"
-OPERADOR_MENORIGUAL "<="
-OPERADOR_IGUALIGUAL "=="
+OPERADOR_MENOR_IGUAL "<="
+OPERADOR_IGUAL_IGUAL "=="
 OPERADOR_DIFERENTE "<>"
 OPERADOR_E "e"
 OPERADOR_OU "ou"
 OPERADOR_NAO "nao"
-SIMBOLO_PONTOVIRGULA ";"
-SIMBOLO_DOISPONTOS ":"
+
+/* definicao de digitios */
+SIMBOLO_PONTO_VIRGULA ";"
+SIMBOLO_DOIS_PONTOS ":"
 SIMBOLO_VIRGULA ","
-SIMBOLO_ABREPARENTESE "("
-SIMBOLO_FECHAPARENTESE ")"
-SIMBOLO_ABRECOLCHETE "["
-SIMBOLO_FECHACOLCHETE "]"
+SIMBOLO_ABRE_PARENTESE "("
+SIMBOLO_FECHA_PARENTESE ")"
+SIMBOLO_ABRE_COLCHETE "["
+SIMBOLO_FECHA_COLCHETE "]"
 SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
-ATRIBUICAO "="
-COMENTARIO_LINHA "//"(.)*
-LITERAL "\""[^"]*"\""
-%x comment stringSequence
+
+%x comment
 
 %%
 "/*" {
@@ -69,57 +86,78 @@ LITERAL "\""[^"]*"\""
 
 {COMENTARIO_LINHA}          {}
 {LITERAL}                   {return token_literal;}
-{LOGICO}                    {return token_logico;}
 {REAL}                      {return token_real;}
 {INTEIRO}+                  {return token_inteiro;}
-{CARACTERE}                 {return token_caracter;}
-{ALGORITMO}                 {return token_algoritmo;}
-{VARIAVEIS}                 {return token_variaveis;}
-{FIM_VARIAVEIS}             {return token_fimVariaveis;}
+{CARACTERE}                 {return token_caractere;}
+
+
+{PA_RE_ALGORITMO}           {return token_algoritmo;}
+{PA_RE_VARIAVEIS}           {return token_variaveis;}
+{PA_RE_FIM_VARIAVEIS}       {return token_fimVariaveis;}
+{PA_RE_INICIO}              {return token_inicio;}
+{PA_RE_FIM}                 {return token_fim;}
+{PA_RE_SE}                  {return token_se;}
+{PA_RE_ENTAO}               {return token_entao;}
+{PA_RE_SENAO}               {return token_senao;}
+{PA_RE_FIMSE}               {return token_fimSe;}
+{PA_RE_DE}                  {return token_de;}
+{PA_RE_VERDADEIRO}          {return token_verdadeiro;}
+{PA_RE_FALSO}               {return token_falso;}
+{PA_RE_ENQUANTO}            {return token_enquanto;}
+{PA_RE_PARA}                {return token_para;}
+{PA_RE_ATE}                 {return token_ate;}
+{PA_RE_FIM_PARA}            {return token_fimPara;}
+{PA_RE_FUNCAO}              {return token_funcao;}
+{PA_RE_RETORNE}             {return token_retorne;}
+{PA_RE_PASSO}               {return token_passo;}
+
+
+
 {TIPO_REAL}                 {return token_tipoReal;}
 {TIPO_INTEIRO}              {return token_tipoInteiro;}
 {TIPO_CARACTERE}            {return token_tipoCaractere;}
 {TIPO_LITERAL}              {return token_tipoLiteral;}
 {TIPO_LOGICO}               {return token_tipoLogico;}
-{INICIO}                    {return token_inicio;}
-{FIM}                       {return token_fim;}
-{PALAVRA_RESERVADA_SE}      {return token_se;}
-{PALAVRA_RESERVADA_ENTAO}   {return token_entao;}
-{PALAVRA_RESERVADA_SENAO}   {return token_senao;}
-{PALAVRA_RESERVADA_FIMSE}   {return token_fimSe;}
-{PALAVRA_RESERVADA_MATRIZ}  {return token_tipoMatriz;}
-{PALAVRA_RESERVADA_DE}      {return token_de;}
-{PALAVRA_RESERVADA_FALSO}   {return token_falso;}
-{PALAVRA_RESERVADA_VERDADEIRO} {return token_verdadeiro;}
-{PALAVRA_RESERVADA}         {return token_palavraReservada;}
-{ATRIBUICAO}                {return token_atribuicao;}
+{TIPO_MATRIZ}               {return token_tipoMatriz;}
+
+
+{OPERADOR_ATRIBUICAO}       {return token_operadorAtribuicao;}
+{OPERADOR_POTENCIA}         {return token_operadorPotencia;}
+{OPERADOR_SOMA_SOMA}        {return token_operadorSomaSoma;}
+{OPERADOR_SUBTRAI_SUBTRAI}  {return token_operadorSubtraiSubtrai;}
+{OPERADOR_PORCENTO}         {return token_operadorPorcento;}
 {OPERADOR_MAIS}             {return token_operadorMais;}
 {OPERADOR_MENOS}            {return token_operadorMenos;}
 {OPERADOR_VEZES}            {return token_operadorVezes;}
 {OPERADOR_DIVIDIR}          {return token_operadorDividir;}
-{OPERADOR_PORCENTO}         {return token_porcento;}
-{OPERADOR_ARITMETICO}       {return token_operadorAritmetico;}
-{OEPRADOR_MAIORIGUAL}       {return token_maiorIgual;}
-{OPERADOR_MENORIGUAL}       {return token_menorIgual;}
-{OPERADOR_MAIOR}            {return token_maior;}
-{OPERADOR_MENOR}            {return token_menor;}
-{OPERADOR_IGUALIGUAL}       {return token_igualIgual;}
-{OPERADOR_E}                {return token_e;}
-{OPERADOR_OU}               {return token_ou;}
-{OPERADOR_NAO}              {return token_nao;}
-{OPERADOR_DIFERENTE}        {return token_diferente;}
-{SIMBOLO_PONTOVIRGULA}      {return token_pontoVirgula;}
-{SIMBOLO_DOISPONTOS}        {return token_doisPontos;}
-{SIMBOLO_VIRGULA}           {return token_virgula;}
-{SIMBOLO_ABREPARENTESE}     {return token_abreParentese;}
-{SIMBOLO_FECHAPARENTESE}    {return token_fechaParentese;}
-{SIMBOLO_ABRECOLCHETE}      {return token_abreColchete;}
-{SIMBOLO_FECHACOLCHETE}     {return token_fechaColchete;}
+{OPERADOR_MAIOR}            {return token_operadorMaior;}
+{OEPRADOR_MAIOR_IGUAL}      {return token_operadorMaiorIgual;}
+{OPERADOR_MENOR}            {return token_operadorMenor;}
+{OPERADOR_MENOR_IGUAL}      {return token_operadorMenorIgual;}
+{OPERADOR_IGUAL_IGUAL}      {return token_operadorIgualIgual;}
+{OPERADOR_DIFERENTE}        {return token_operadorDiferente;}
+{OPERADOR_E}                {return token_operadorE;}
+{OPERADOR_OU}               {return token_operadorOu;}
+{OPERADOR_NAO}              {return token_operadorNao;}
+
+ 
+{SIMBOLO_PONTO_VIRGULA}     {return token_simboloPontoVirgula;}
+{SIMBOLO_DOIS_PONTOS}       {return token_simboloDoisPontos;}
+{SIMBOLO_VIRGULA}           {return token_simboloVirgula;}
+{SIMBOLO_ABRE_PARENTESE}    {return token_simboloAbreParentese;}
+{SIMBOLO_FECHA_PARENTESE}   {return token_simboloFechaParentese;}
+{SIMBOLO_ABRE_COLCHETE}     {return token_simboloAbreColchete;}
+{SIMBOLO_FECHA_COLCHETE}    {return token_simboloFechaColchete;}
 {SIMBOLO_ESPECIAL}          {return token_simboloEspecial;}
+
+ 
 {IDENTIFICADOR}             {return token_identificador;}
+
+
 [ \t]                       ; /* sao ignorados */
 .                           {}
 [\n]                        line_num++;
+
 
 <comment>([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/ { /*procura por qualquer coisa que termine com final de comentario */
                                                     int i = 0, count = 0;
@@ -131,30 +169,6 @@ LITERAL "\""[^"]*"\""
 <comment>.                                      { /*se nao encontrar o final do comentario, volta ao inicio avaliando normalmente */
                                                     printf ("/: OPERADORARITMETICO\n");
                                                     printf ("*: OPERADORARITMETICO\n");
-                                                    BEGIN(comment_caller);
-                                                }
-                                                
-<stringSequence>(\\.|[^"])*\" { /*procura por qualquer coisa que termine com aspas duplas */
-                                                    /*"\"" {
-                                                            comment_caller = INITIAL;
-                                                            BEGIN(stringSequence);
-                                                            
-                                                            }*/
-                                                    int i = 0, count = 0;
-                                                    for (i=0, count=0; i < strlen(yytext); i++){                  
-                                                        count += (yytext[i] == '\n');
-                                                    }
-                                                    char* plainText = (char*)malloc((strlen(yytext)+1)*sizeof(char));
-                                                    plainText[0] = '\"';
-                                                    for (i=0; i < strlen(yytext); i++){                  
-                                                       plainText[i+1] = yytext[i];
-                                                    }
-                                                    printf ("%s: LITERAL\n", plainText); 
-                                                    line_num += count;
-                                                    BEGIN(comment_caller);
-                                                }
-<stringSequence>.                               { /*se nao encontrar o final da string, volta ao inicio avaliando normalmente */
-                                                    printf ("\": SIMBOLOESPECIAL\n");
                                                     BEGIN(comment_caller);
                                                 }
 %%
