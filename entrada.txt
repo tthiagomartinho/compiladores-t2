@@ -41,6 +41,16 @@ inicio
 	para x de fat ate 1 faca
 		res = res * x;
 	fim-para
+
+	switch(k):
+	caso 1:
+		x = 2;
+		y = 3 + 7;
+		pare;
+	caso teste:
+		x = 2;
+		y = 3 + 7;
+		pare;
 fim
 
 funcao soma(x : inteiro, y : inteiro) : inteiro 

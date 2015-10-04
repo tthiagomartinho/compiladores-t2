@@ -33,6 +33,9 @@
 %token token_funcao
 %token token_retorne
 %token token_passo
+%token token_switch
+%token token_caso
+%token token_pare
 
 /* TOKENS TIPOS DE DADOS */
 %token token_tipoReal
@@ -126,6 +129,7 @@ COMANDOS
     | COMANDO_SE COMANDOS
     | COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula COMANDOS
     | COMANDO_PARA COMANDOS
+    | COMANDO_SWITCH COMANDOS
     |
     ;
 
@@ -146,6 +150,17 @@ COMANDO_SE
 COMANDO_PARA
     : token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_passo NUMERO token_faca COMANDOS token_fimPara
     | token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_faca COMANDOS token_fimPara
+    ;
+
+COMANDO_SWITCH
+    : token_switch token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese token_simboloDoisPontos COMANDO_SWITCH_CASOS 
+    ;
+
+COMANDO_SWITCH_CASOS
+    : token_caso NUMERO token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula COMANDO_SWITCH_CASOS
+    | token_caso token_identificador token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula COMANDO_SWITCH_CASOS
+    | token_caso NUMERO token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula
+    | token_caso token_identificador token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula
     ;
 
 COMANDO_CHAMADA_FUNCAO

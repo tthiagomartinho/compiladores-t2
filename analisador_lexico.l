@@ -37,6 +37,9 @@ PA_RE_FIM_PARA "fim-para"
 PA_RE_FUNCAO "funcao"
 PA_RE_RETORNE "retorne"
 PA_RE_PASSO "passo"
+PA_RE_SWITCH "switch"
+PA_RE_CASO "caso"
+PA_RE_PARE "pare"
 
 /* TIPOS DE DADOS */
 TIPO_REAL "real"
@@ -112,7 +115,9 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_FUNCAO}              {return token_funcao;}
 {PA_RE_RETORNE}             {return token_retorne;}
 {PA_RE_PASSO}               {return token_passo;}
-
+{PA_RE_SWITCH}              {return token_switch;}
+{PA_RE_CASO}                {return token_caso;}
+{PA_RE_PARE}                {return token_pare;}
 
 
 {TIPO_REAL}                 {return token_tipoReal;}
