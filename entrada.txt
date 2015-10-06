@@ -16,7 +16,7 @@ inicio
     	x = 2 + 3;
     	enquanto x == 2 faca
     		se x > y entao
-    			k = verdadeiro ou ~(p e q);
+    			k = verdadeiro ou nao (p e q);
     			w = "a vida eh bela";
     		senao
     			se x <> y entao
@@ -24,8 +24,16 @@ inicio
     				w = "a vida eh mais que bela";
     			senao
     				j = j--;
-    				imprima
-    				(soma(3,2), 1 - 2, 5, "hello world", 7^5, 10^teste, multiplica(4,5));
+    				imprima(soma(3,2), 1 - 2, 5, "hello world", 7^5, 10^teste, multiplica(4,5));
+                    k[y] = r[2]; 
+                    k[2][3] = 3;
+                    k[2][3] = -3;
+                    k[2][3] = 1.7;
+                    k[2][3][4][5][6] = -1.74654;
+                    k[2][3] = "a vida";
+                    k[2][3] = r[2];
+                    k[y] = r[2][3];
+                    x = 10 - (-10);
     				somatorio = soma(1, 2);
     				w = "a vida nao eh bela";
     				imprime(1, 2 , "inglaterra", 'a', w);
@@ -33,6 +41,21 @@ inicio
    			fim-se
    		fim-enquanto
    	fim-enquanto
+   	
+   	faca-enquanto (x > y):
+        j = j--;
+                    imprima(soma(3,2), 1 - 2, 5, "hello world", 7^5, 10^teste, multiplica(4,5));
+                    k[y] = r[2]; 
+                    k[2][3] = 3;
+                    k[2][3] = -3;
+                    k[2][3] = 1.7;
+                    k[2][3][4][5][6] = -1.74654;
+                    k[2][3] = "a vida";
+                    k[2][3] = r[2];
+                    k[y] = r[2][3];
+                    x = 10 - (-10);
+                    somatorio = soma(1, 2);
+      fim-faca-enquanto
 
    	para x de fat ate 1 passo -1 faca
 		res = res * x;
@@ -51,6 +74,7 @@ inicio
 		x = 2;
 		y = 3 + 7;
 		pare;
+	fim-switch
 fim
 
 funcao soma(x : inteiro, y : inteiro) : inteiro 

@@ -7,7 +7,9 @@
 /* TOKENS DEFINICOES BASICAS */
 %token token_identificador
 %token token_inteiro
+%token token_inteiroNegativo
 %token token_real
+%token token_realNegativo
 %token token_literal
 %token token_caractere
 
@@ -34,8 +36,11 @@
 %token token_retorne
 %token token_passo
 %token token_switch
+%token token_fimSwitch
 %token token_caso
 %token token_pare
+%token token_facaEnquanto
+%token token_fimFacaEnquanto
 
 /* TOKENS TIPOS DE DADOS */
 %token token_tipoReal
@@ -125,6 +130,7 @@ PROGRAMA_PRINCIPAL
 
 COMANDOS
     : COMANDO_ATRIBUICAO token_simboloPontoVirgula COMANDOS
+    | COMANDO_FACA_ENQUANTO COMANDOS
     | COMANDO_ENQUANTO COMANDOS
     | COMANDO_SE COMANDOS
     | COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula COMANDOS
@@ -136,12 +142,26 @@ COMANDOS
 COMANDO_ATRIBUICAO
     : token_identificador token_operadorAtribuicao COMANDO_CHAMADA_FUNCAO
     | token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA
+    | token_identificador token_operadorAtribuicao token_identificador ACESSO_MATRIZ EXPRESSAO_COMPLETA
+    | token_identificador ACESSO_MATRIZ token_operadorAtribuicao token_identificador ACESSO_MATRIZ
+    | token_identificador ACESSO_MATRIZ token_operadorAtribuicao EXPRESSAO_COMPLETA
     ;
 
+ACESSO_MATRIZ
+    : token_simboloAbreColchete token_inteiro token_simboloFechaColchete ACESSO_MATRIZ
+    | token_simboloAbreColchete token_identificador token_simboloFechaColchete ACESSO_MATRIZ
+    | token_simboloAbreColchete token_identificador token_simboloFechaColchete
+    | token_simboloAbreColchete token_inteiro token_simboloFechaColchete
+    ;
+
+COMANDO_FACA_ENQUANTO
+    : token_facaEnquanto EXPRESSAO_COMPLETA token_simboloDoisPontos COMANDOS token_fimFacaEnquanto
+    ;
+    
 COMANDO_ENQUANTO
     : token_enquanto EXPRESSAO_COMPLETA token_faca COMANDOS token_fimEnquanto
     ;
-
+       
 COMANDO_SE
     : token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_senao COMANDOS token_fimSe
     | token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_fimSe
@@ -153,7 +173,7 @@ COMANDO_PARA
     ;
 
 COMANDO_SWITCH
-    : token_switch token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese token_simboloDoisPontos COMANDO_SWITCH_CASOS 
+    : token_switch token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese token_simboloDoisPontos COMANDO_SWITCH_CASOS token_fimSwitch
     ;
 
 COMANDO_SWITCH_CASOS
@@ -203,6 +223,8 @@ COMANDO_RETORNE
 NUMERO
     : token_real
     | token_inteiro
+    | token_realNegativo
+    | token_inteiroNegativo
     ;
 
 EXPRESSAO_COMPLETA
@@ -239,8 +261,8 @@ FATOR
     | token_caractere
     | token_identificador
     | token_operadorNao token_identificador
-    | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
-    | token_operadorNao token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
+    | token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese
+    | token_operadorNao token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese
     ;
 
 OPERADORES_MAIS_MAIS_MENOS_MENOS

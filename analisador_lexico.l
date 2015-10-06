@@ -8,9 +8,11 @@
 
 /* DEFINICOES BASICAS */
 IDENTIFICADOR {CHAR}("_"|{CHAR}|{INTEIRO})*
-INTEIRO ("-")?[0-9]
+INTEIRO [0-9]
 CHAR [a-zA-Z]
-REAL ("-")?{INTEIRO}+"."{INTEIRO}+
+REAL {INTEIRO}+"."{INTEIRO}+
+INTEIRO_NEGATIVO "-"[0-9]+
+REAL_NEGATIVO -{INTEIRO}+"."{INTEIRO}+
 CARACTERE "'"{CHAR}"'"
 COMENTARIO_LINHA "//"(.)*
 LITERAL "\""[^"]*"\""
@@ -38,8 +40,11 @@ PA_RE_FUNCAO "funcao"
 PA_RE_RETORNE "retorne"
 PA_RE_PASSO "passo"
 PA_RE_SWITCH "switch"
+PA_RE_FIM_SWITCH "fim-switch"
 PA_RE_CASO "caso"
 PA_RE_PARE "pare"
+PA_RE_FACA_ENQUANTO "faca-enquanto"
+PA_RE_FIM_FACA_ENQUANTO "fim-faca-enquanto"
 
 /* TIPOS DE DADOS */
 TIPO_REAL "real"
@@ -89,6 +94,8 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 
 {COMENTARIO_LINHA}          {}
 {LITERAL}                   {return token_literal;}
+{INTEIRO_NEGATIVO}          {return token_inteiroNegativo;}
+{REAL_NEGATIVO}             {return token_realNegativo;}
 {REAL}                      {return token_real;}
 {INTEIRO}+                  {return token_inteiro;}
 {CARACTERE}                 {return token_caractere;}
@@ -106,6 +113,8 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_DE}                  {return token_de;}
 {PA_RE_VERDADEIRO}          {return token_verdadeiro;}
 {PA_RE_FALSO}               {return token_falso;}
+{PA_RE_FACA_ENQUANTO}       {return token_facaEnquanto;}
+{PA_RE_FIM_FACA_ENQUANTO}   {return token_fimFacaEnquanto;}
 {PA_RE_ENQUANTO}            {return token_enquanto;}
 {PA_RE_FACA}                {return token_faca;}
 {PA_RE_FIM_ENQUANTO}        {return token_fimEnquanto;}
@@ -116,6 +125,7 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_RETORNE}             {return token_retorne;}
 {PA_RE_PASSO}               {return token_passo;}
 {PA_RE_SWITCH}              {return token_switch;}
+{PA_RE_FIM_SWITCH}          {return token_fimSwitch;}
 {PA_RE_CASO}                {return token_caso;}
 {PA_RE_PARE}                {return token_pare;}
 
