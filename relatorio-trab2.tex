@@ -1,0 +1,100 @@
+\documentclass[
+12pt,				% Tamanho da fonte.
+a4paper,			% Tamanho do papel.
+english,			% Idioma adicional para hifenização.
+french,				% Idioma adicional para hifenização.
+spanish,			% Idioma adicional para hifenização.
+brazil,				% O último idioma é o principal do documento.
+article
+]{abntex2}
+
+
+
+%%% Importação de pacotes. %%%
+
+% Usa a fonte Latin Modern.
+\usepackage{lmodern}
+
+% Seleção de códigos de fonte.
+\usepackage[T1]{fontenc}
+
+% Codificação do documento em Unicode.
+\usepackage[utf8]{inputenc}
+
+% Para melhorias de justificação.
+\usepackage{microtype}
+
+%opening
+\title{Trabalho 2 Compiladores}
+\author{Rodrigo Pimenta, Thiago Martinho}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+Este trabalho teve como objetivo a construção do analisador sintático do  compilador proposto para a linguagem GPortugol cujo manual pode ser encontrado em (\url{http://www.inf.ufes.br/~mberger/Disciplinas/2015_2/Compiladores/manualGPortugol.pdf}). A base desse trabalho de número dois é o analisador léxico construído com o auxilio da ferramenta Flex.
+Para o desenvolvimento do analisador sintático, foi utilizado a linguagem de programação C e a ferramenta Bison.
+
+
+\section{Analisador Sintático}
+
+Um analisador sintático consistente em verificar a sintaxe de um programa escrito em uma determinada linguagem. Caso o código esteja totalmente de acordo com a gramática estabelecida neste trabalho, nenhuma mensagem de erro é mostrada para o usuário, caso contrário, é informado qual a linha apresenta um erro de sintaxe.
+
+Esses possíveis erros podem ser de natureza diferente como, por exemplo, utilização de palavras reservadas de forma diferente do contexto que elas devem ser empregadas, comandos incompletos, falta de ponto e virgula, entre outros. 
+
+A ferramenta Bison (\url{https://www.gnu.org/software/bison/}) é um gerador de interpretadores que analisa a sintaxe de um arquivo de entrada. Segundo a descrição presente no site da ferramenta, ela se intitula como \textit{um gerador de interpretadores para fins gerais que converte uma descrição gramatical de uma gramática livre de contexto "LALR(1)" para um programa C que analisa aquela gramática. Uma vez que você esteja acostumado com "Bison", você pode usá-lo para desenvolver um ampla quantidade de interpretadores de linguagem, daqueles usados em simples calculadoras de mesa até linguagens de programação complexas.}
+
+Com o auxilio dessa ferramenta, em parceria com o Flex, foi construído nesse trabalho um analisador léxico para a linguagem GPortugol de acordo coma  gramática definida por nós.
+
+
+\section{Operações Suportadas}
+Nesta seção, estão listadas e descritas todas as operações suportadas pela gramática construída.
+\subsection{Declaração de Variáveis}
+A declaração de variáveis é feita da forma como está presente no manual da linguagem, com exceção da definição do tipo matriz. Neste trabalho, foi considerado que uma matriz é composta de \textit{n} dimensões e de um tipo. Esse tipo, na definição original da ferramenta, deveria ser escrito no plural, porém para nós ele deve ser declarado da mesma forma que uma variável não-matriz, ou seja, no singular.
+
+
+\subsection{Comandos de Seleção}
+Os comandos de seleção presentes na linguagem são o \textit{se-entao-senao-fim-se} e o \textit{avalie-caso-pare-fim-avalie}.
+O comando \textit{se} pode ser acompanhado ou não de uma cláusula \textit{senao} mas obrigatoriamente deverá ser terminado com \textit{fim-se}. Já o comando \textit{avalie} deverá ter uma expressão a ser avaliada e alguns casos a serem considerados. Esses casos não podem conter expressões lógicas e nem aritméticas, sendo possíveis apenas valores já conhecidos, como inteiros ou lógicos (da mesma forma que na linguagem C).
+
+\subsection{Comandos de Repetição}
+Os comandos de repetição suportados na linguagem são o \textit{enquanto}, o \textit{faca-enquanto} e o \textit{para}. A definição e utilização desses comandos funcionam de acordo com a especificação original da linguagem.
+
+O comando \textit{faca-enquanto} foi inserido na gramática e pode ser utilizado da seguinte forma:
+\textit{faca: BLOCO DE CÓDIGO enquanto (EXPRESSAO A SER AVALIADA) fim-enquanto}. Com essa sintaxe é possível realizar operações da mesma forma que o comando \textit{DO-WHILE} da linguagem C. 
+
+\subsection{Declaração de Função}
+As declarações de funções seguem de forma similar a definida pelo manual da linguagem, onde vale destacar que não é possível uma função retornar uma matriz.
+
+A única exceção para declarações de funções é relativo a posição delas. As função devem ser declaradas abaixo da declaração de variáveis (quando houver) e acima do bloco principal do programa.
+
+Não é possível declarar funções de nomes \textit{leia} e \textit{imprima} por serem reservadas da linguagem.
+
+\subsection{Chamada de Funções}
+As chamadas de funções podem conter expressões, outras funções, variáveis, literais, valores lógicos, inteiros ou reais como parâmetro. Nessa fase de construção do compilador, não é verificado se existe ou não uma função declarada correspondente.
+
+\subsection{Atribuições}
+Nosso analisador sintático verificará tanto operações aritméticas como operações lógicas (ou relacionais). Durante essa fase de avaliação do compilador, expressões que podem não fazer sentido também são aceitas, uma vez que estão escritas na forma correta. O sentido da expressão será avaliado no próximo trabalho (analisador semântico).
+
+Alguns exemplos de expressões incorretas mas que são aceitas pelo analisador sintático são:
+
+
+\begin{math}
+	\mathit{x = verdadeiro ^ 3;}
+\end{math}
+
+\begin{math}
+	\mathit{x = 10 + verdadeiro;}
+\end{math}
+
+\begin{math}
+	\mathit{x[2] = "exemplo" * 7;}
+\end{math}
+
+
+\section{A gramática}
+Neste seção, está descrito de forma mais formal a gramática construída. O símbolo * indica a ocorrência de zero ou mais vezes de um item, o símbolo + indica a ocorrência de uma ou mais vezes e o símbolo ? indica que o item é opcional.
+
+\end{document}
