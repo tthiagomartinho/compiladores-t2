@@ -24,6 +24,8 @@
 %token token_senao
 %token token_fimSe
 %token token_de
+%token token_leia
+%token token_imprima
 %token token_verdadeiro
 %token token_falso
 %token token_enquanto
@@ -35,8 +37,8 @@
 %token token_funcao
 %token token_retorne
 %token token_passo
-%token token_switch
-%token token_fimSwitch
+%token token_avalie
+%token token_fimAvalie
 %token token_caso
 %token token_pare
 %token token_facaEnquanto
@@ -89,17 +91,51 @@ ALGORITMO
     ;
 
 PROGRAMA
-    : VARIAVEIS
+    : VARIAVEIS DECLARACAO_FUNCAO PROGRAMA_PRINCIPAL
+    | VARIAVEIS PROGRAMA_PRINCIPAL
+    | DECLARACAO_FUNCAO PROGRAMA_PRINCIPAL
     | PROGRAMA_PRINCIPAL
     ;
 
 VARIAVEIS
-    : token_variaveis DECLARACAO_VARIAVEL token_fimVariaveis PROGRAMA_PRINCIPAL
+    : token_variaveis DECLARACAO_VARIAVEL token_fimVariaveis
     ;
 
+DECLARACAO_VARIAVEL
+    : DECLARACAO_VARIAVEL token_identificador token_simboloVirgula 
+    | DECLARACAO_VARIAVEL token_identificador token_simboloDoisPontos TIPO_VARIAVEIS token_simboloPontoVirgula
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEIS token_simboloPontoVirgula
+    ;
 
-TIPO_VARIAVEL
-    : token_tipoMatriz MATRIZ
+DECLARACAO_FUNCAO
+    : DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
+    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
+    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
+    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
+    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
+    ;
+
+PARAMETRO_DECLARACAO_FUNCAO
+    : PARAMETRO_DECLARACAO_FUNCAO token_simboloVirgula token_identificador token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO 
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO
+    ;
+
+ROTINA_FUNCAO
+    : DECLARACAO_VARIAVEL token_inicio LISTA_COMANDOS COMANDO_RETORNO token_fim
+    | token_inicio LISTA_COMANDOS COMANDO_RETORNO token_fim
+    | token_inicio COMANDO_RETORNO token_fim
+    ;
+
+COMANDO_RETORNO
+    : token_retorne EXPRESSAO token_simboloPontoVirgula
+    | token_retorne token_simboloPontoVirgula
+    ;
+
+TIPO_VARIAVEIS
+    : MATRIZ
     | TIPO_VARIAVEL_PRIMITIVO
     ;
 
@@ -112,173 +148,164 @@ TIPO_VARIAVEL_PRIMITIVO
     ;
 
 MATRIZ
-    : token_simboloAbreColchete token_inteiro token_simboloFechaColchete MATRIZ
-    | token_simboloAbreColchete token_inteiro token_simboloFechaColchete token_de TIPO_VARIAVEL_PRIMITIVO
+    : token_tipoMatriz POSICAO_MATRIZ token_de TIPO_VARIAVEL_PRIMITIVO
     ;
 
-DECLARACAO_VARIAVEL
-    : token_identificador token_simboloVirgula DECLARACAO_VARIAVEL
-    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula DECLARACAO_VARIAVEL
-    | token_identificador token_simboloVirgula token_fimVariaveis PROGRAMA_PRINCIPAL
-    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloPontoVirgula
-    ;
-
-PROGRAMA_PRINCIPAL
-    : token_inicio COMANDOS token_fim
-    | token_inicio COMANDOS token_fim FUNCAO
-    ;
-
-COMANDOS
-    : COMANDO_ATRIBUICAO token_simboloPontoVirgula COMANDOS
-    | COMANDO_FACA_ENQUANTO COMANDOS
-    | COMANDO_ENQUANTO COMANDOS
-    | COMANDO_SE COMANDOS
-    | COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula COMANDOS
-    | COMANDO_PARA COMANDOS
-    | COMANDO_SWITCH COMANDOS
-    |
-    ;
-
-COMANDO_ATRIBUICAO
-    : token_identificador token_operadorAtribuicao COMANDO_CHAMADA_FUNCAO
-    | token_identificador token_operadorAtribuicao EXPRESSAO_COMPLETA
-    | token_identificador token_operadorAtribuicao token_identificador ACESSO_MATRIZ EXPRESSAO_COMPLETA
-    | token_identificador ACESSO_MATRIZ token_operadorAtribuicao token_identificador ACESSO_MATRIZ
-    | token_identificador ACESSO_MATRIZ token_operadorAtribuicao EXPRESSAO_COMPLETA
-    ;
-
-ACESSO_MATRIZ
-    : token_simboloAbreColchete token_inteiro token_simboloFechaColchete ACESSO_MATRIZ
-    | token_simboloAbreColchete token_identificador token_simboloFechaColchete ACESSO_MATRIZ
+POSICAO_MATRIZ
+    : POSICAO_MATRIZ token_simboloAbreColchete token_identificador token_simboloFechaColchete 
+    | POSICAO_MATRIZ token_simboloAbreColchete token_inteiro token_simboloFechaColchete 
     | token_simboloAbreColchete token_identificador token_simboloFechaColchete
     | token_simboloAbreColchete token_inteiro token_simboloFechaColchete
     ;
 
-COMANDO_FACA_ENQUANTO
-    : token_facaEnquanto EXPRESSAO_COMPLETA token_simboloDoisPontos COMANDOS token_fimFacaEnquanto
+PROGRAMA_PRINCIPAL
+    : token_inicio LISTA_COMANDOS token_fim
+    | token_inicio token_fim
     ;
-    
+
+LISTA_COMANDOS
+    : LISTA_COMANDOS COMANDO_ATRIBUICAO token_simboloPontoVirgula 
+    | COMANDO_ATRIBUICAO token_simboloPontoVirgula
+    | LISTA_COMANDOS COMANDO_ENQUANTO 
+    | COMANDO_ENQUANTO
+    | LISTA_COMANDOS COMANDO_PARA 
+    | COMANDO_PARA
+    | LISTA_COMANDOS COMANDO_LEIA
+    | COMANDO_LEIA
+    | LISTA_COMANDOS COMANDO_IMPRIMA
+    | COMANDO_IMPRIMA
+    | LISTA_COMANDOS COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula 
+    | COMANDO_CHAMADA_FUNCAO token_simboloPontoVirgula
+    | LISTA_COMANDOS COMANDO_SE 
+    | COMANDO_SE
+    | LISTA_COMANDOS COMANDO_FACA_ENQUANTO
+    | COMANDO_FACA_ENQUANTO
+    | LISTA_COMANDOS COMANDO_AVALIE
+    | COMANDO_AVALIE
+    ;
+
+COMANDO_ATRIBUICAO
+    : token_identificador token_operadorAtribuicao VALOR_A_SER_ATRIBUIDO
+    | ACESSO_MATRIZ token_operadorAtribuicao VALOR_A_SER_ATRIBUIDO
+    ;
+
+VALOR_A_SER_ATRIBUIDO
+    : VALOR_A_SER_ATRIBUIDO EXPRESSAO 
+    | EXPRESSAO
+    ;
+
 COMANDO_ENQUANTO
-    : token_enquanto EXPRESSAO_COMPLETA token_faca COMANDOS token_fimEnquanto
+    : token_enquanto EXPRESSAO token_faca LISTA_COMANDOS token_fimEnquanto
     ;
-       
+
+COMANDO_PARA 
+    : token_para token_identificador token_de EXPRESSAO token_ate EXPRESSAO token_faca LISTA_COMANDOS token_fimPara
+    | token_para token_identificador token_de EXPRESSAO token_ate EXPRESSAO token_passo NUMERO token_faca LISTA_COMANDOS token_fimPara
+    ;
+
 COMANDO_SE
-    : token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_senao COMANDOS token_fimSe
-    | token_se EXPRESSAO_COMPLETA token_entao COMANDOS token_fimSe
+    : token_se EXPRESSAO token_entao LISTA_COMANDOS token_senao LISTA_COMANDOS token_fimSe
+    | token_se EXPRESSAO token_entao LISTA_COMANDOS token_fimSe
     ;
 
-COMANDO_PARA
-    : token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_passo NUMERO token_faca COMANDOS token_fimPara
-    | token_para token_identificador token_de EXPRESSAO_COMPLETA token_ate EXPRESSAO_COMPLETA token_faca COMANDOS token_fimPara
+COMANDO_FACA_ENQUANTO
+    : token_faca token_simboloDoisPontos LISTA_COMANDOS token_enquanto token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese token_fimEnquanto
     ;
 
-COMANDO_SWITCH
-    : token_switch token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese token_simboloDoisPontos COMANDO_SWITCH_CASOS token_fimSwitch
+COMANDO_AVALIE
+    : token_avalie token_simboloAbreParentese token_identificador token_simboloFechaParentese token_simboloDoisPontos AVALIE_CASO token_fimAvalie
     ;
 
-COMANDO_SWITCH_CASOS
-    : token_caso NUMERO token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula COMANDO_SWITCH_CASOS
-    | token_caso token_identificador token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula COMANDO_SWITCH_CASOS
-    | token_caso NUMERO token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula
-    | token_caso token_identificador token_simboloDoisPontos COMANDOS token_pare token_simboloPontoVirgula
+AVALIE_CASO
+    : AVALIE_CASO token_caso token_identificador token_simboloDoisPontos LISTA_COMANDOS token_pare token_simboloPontoVirgula
+    | AVALIE_CASO token_caso NUMERO token_simboloDoisPontos LISTA_COMANDOS token_pare token_simboloPontoVirgula
+    | token_caso token_identificador token_simboloDoisPontos LISTA_COMANDOS token_pare token_simboloPontoVirgula
+    | token_caso NUMERO token_simboloDoisPontos LISTA_COMANDOS token_pare token_simboloPontoVirgula
+    ;
+
+COMANDO_LEIA
+    : token_leia token_simboloAbreParentese token_simboloFechaParentese token_simboloPontoVirgula
+    ;
+
+COMANDO_IMPRIMA
+    : token_imprima token_simboloAbreParentese PARAMETROS_FUNCAO_IMPRIMA token_simboloFechaParentese token_simboloPontoVirgula
+    ;
+
+PARAMETROS_FUNCAO_IMPRIMA
+    : EXPRESSAO token_simboloVirgula PARAMETROS_FUNCAO_IMPRIMA
+    | EXPRESSAO
     ;
 
 COMANDO_CHAMADA_FUNCAO
     : token_identificador token_simboloAbreParentese token_simboloFechaParentese
-    | token_identificador token_simboloAbreParentese PARAMETRO_FUNCAO_CHAMADA_FUNCAO token_simboloFechaParentese
+    | token_identificador token_simboloAbreParentese PARAMETROS_FUNCAO token_simboloFechaParentese
     ;
 
-PARAMETRO_FUNCAO_CHAMADA_FUNCAO
-    : EXPRESSAO_COMPLETA token_simboloVirgula PARAMETRO_FUNCAO_CHAMADA_FUNCAO
-    | COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETRO_FUNCAO_CHAMADA_FUNCAO
-    | EXPRESSAO_COMPLETA
+PARAMETROS_FUNCAO
+    : COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETROS_FUNCAO
     | COMANDO_CHAMADA_FUNCAO
+    | EXPRESSAO token_simboloVirgula PARAMETROS_FUNCAO
+    | EXPRESSAO
     ;
-
-FUNCAO
-    : DECLARACAO_FUNCAO FUNCAO
-    | DECLARACAO_FUNCAO
-    ;
-
-DECLARACAO_FUNCAO
-    : token_funcao ARGUMENTOS_DECLARACAO_FUNCAO token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO DECLARACAO_VARIAVEL token_inicio COMANDOS COMANDO_RETORNE token_fim
-    | token_funcao ARGUMENTOS_DECLARACAO_FUNCAO token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO token_inicio COMANDOS COMANDO_RETORNE token_fim
-    ;
-
-ARGUMENTOS_DECLARACAO_FUNCAO
-    : token_identificador token_simboloAbreParentese token_simboloFechaParentese
-    | token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese
-    ;
-
-PARAMETRO_DECLARACAO_FUNCAO
-    : token_identificador token_simboloDoisPontos TIPO_VARIAVEL token_simboloVirgula PARAMETRO_DECLARACAO_FUNCAO
-    | token_identificador token_simboloDoisPontos TIPO_VARIAVEL
-    ;
-
-COMANDO_RETORNE
-    : token_retorne EXPRESSAO_COMPLETA token_simboloPontoVirgula COMANDOS
-    | token_retorne token_simboloPontoVirgula COMANDOS
-    ;
-
-NUMERO
-    : token_real
-    | token_inteiro
-    | token_realNegativo
-    | token_inteiroNegativo
-    ;
-
-EXPRESSAO_COMPLETA
-    : EXPRESSAO
-    | EXPRESSAO token_operadorDiferente EXPRESSAO
-    | EXPRESSAO token_operadorMenor EXPRESSAO
-    | EXPRESSAO token_operadorMenorIgual EXPRESSAO
-    | EXPRESSAO token_operadorMaior EXPRESSAO
-    | EXPRESSAO token_operadorMaiorIgual EXPRESSAO
-    ;
-
+    
 EXPRESSAO
-    : EXPRESSAO token_operadorMais TERMO
-    | EXPRESSAO token_operadorMenos TERMO
-    | EXPRESSAO token_operadorOu TERMO
-    | TERMO
+    : EXPRESSAO_SIMPLES
+    | EXPRESSAO_SIMPLES OPERADORES_RELACIONAIS EXPRESSAO_SIMPLES
+    ;
+
+EXPRESSAO_SIMPLES
+    : TERMO
+    | EXPRESSAO_SIMPLES OPERADORES_BAIXA_PRECEDENCIA TERMO
     ;
 
 TERMO
-    : TERMO token_operadorVezes FATOR
-    | TERMO token_operadorDividir FATOR
-    | TERMO token_operadorE FATOR
-    | TERMO token_operadorPorcento FATOR
-    | TERMO token_operadorIgualIgual FATOR
-    | TERMO token_operadorPotencia FATOR
-    | FATOR
+    : FATOR
+    | TERMO OPERADORES_ALTA_PRECEDENCIA FATOR
     ;
 
 FATOR
-    : NUMERO
-    | OPERADORES_MAIS_MAIS_MENOS_MENOS
-    | CONSTANTES_LOGICA
-    | token_literal
-    | token_caractere
-    | token_identificador
-    | token_operadorNao token_identificador
-    | token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese
-    | token_operadorNao token_simboloAbreParentese EXPRESSAO_COMPLETA token_simboloFechaParentese
-    ;
-
-OPERADORES_MAIS_MAIS_MENOS_MENOS
-    : token_operadorSomaSoma NUMERO
-    | NUMERO token_operadorSomaSoma
-    | token_operadorSubtraiSubtrai NUMERO
-    | NUMERO token_operadorSubtraiSubtrai
-    | token_operadorSomaSoma token_identificador
-    | token_identificador token_operadorSomaSoma
-    | token_operadorSubtraiSubtrai token_identificador
-    | token_identificador token_operadorSubtraiSubtrai
-    ;
-
-CONSTANTES_LOGICA
-    : token_verdadeiro
+    : token_identificador
+    | token_operadorNao FATOR
+    | NUMERO
+    | ACESSO_MATRIZ
+    | token_verdadeiro
     | token_falso
+    | token_literal
+    | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
+    ;
+
+NUMERO
+    : token_inteiro
+    | token_inteiroNegativo
+    | token_real
+    | token_realNegativo
+    ;
+
+ACESSO_MATRIZ
+    : token_identificador POSICAO_MATRIZ
+    ;
+
+OPERADORES_RELACIONAIS
+    : token_operadorIgualIgual
+    | token_operadorMenor
+    | token_operadorMenorIgual
+    | token_operadorMaiorIgual
+    | token_operadorMaior
+    | token_operadorDiferente
+    ;
+
+OPERADORES_BAIXA_PRECEDENCIA
+    : token_operadorMais
+    | token_operadorMenos
+    | token_operadorOu
+    ;
+
+OPERADORES_ALTA_PRECEDENCIA
+    : token_operadorVezes
+    | token_operadorDividir
+    | token_operadorPorcento
+    | token_operadorPotencia
+    | token_operadorE
     ;
 
 %%
@@ -286,11 +313,11 @@ CONSTANTES_LOGICA
 #include "lex.yy.c"
 
 main(){
-	yyparse();
+    yyparse();
 }
 
 /* rotina chamada por yyparse quando encontra erro */
 yyerror (void){
-	printf("Erro na Linha: %d\n", line_num);
+    printf("Erro na Linha: %d\n", line_num);
 }
 

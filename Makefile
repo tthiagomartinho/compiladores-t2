@@ -1,4 +1,4 @@
-all: compila
+all: compila executa
 
 compila:
 	flex -i analisador_lexico.l
@@ -6,4 +6,4 @@ compila:
 	gcc -otrab2 analisador_sintatico.tab.c -lfl
 
 executa:
-	./trab2 < entrada.txt
+	./trab2 < entrada3.txt

@@ -28,6 +28,8 @@ PA_RE_ENTAO "entao"
 PA_RE_SENAO "senao"
 PA_RE_FIMSE "fim-se"
 PA_RE_DE "de"
+PA_RE_LEIA "leia"
+PA_RE_IMPRIMA "imprima"
 PA_RE_VERDADEIRO "verdadeiro"
 PA_RE_FALSO "falso"
 PA_RE_ENQUANTO "enquanto"
@@ -39,12 +41,10 @@ PA_RE_FIM_PARA "fim-para"
 PA_RE_FUNCAO "funcao"
 PA_RE_RETORNE "retorne"
 PA_RE_PASSO "passo"
-PA_RE_SWITCH "switch"
-PA_RE_FIM_SWITCH "fim-switch"
+PA_RE_AVALIE "avalie"
+PA_RE_FIM_AVALIE "fim-avalie"
 PA_RE_CASO "caso"
 PA_RE_PARE "pare"
-PA_RE_FACA_ENQUANTO "faca-enquanto"
-PA_RE_FIM_FACA_ENQUANTO "fim-faca-enquanto"
 
 /* TIPOS DE DADOS */
 TIPO_REAL "real"
@@ -111,10 +111,10 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_SENAO}               {return token_senao;}
 {PA_RE_FIMSE}               {return token_fimSe;}
 {PA_RE_DE}                  {return token_de;}
+{PA_RE_LEIA}                {return token_leia;}
+{PA_RE_IMPRIMA}             {return token_imprima;}
 {PA_RE_VERDADEIRO}          {return token_verdadeiro;}
 {PA_RE_FALSO}               {return token_falso;}
-{PA_RE_FACA_ENQUANTO}       {return token_facaEnquanto;}
-{PA_RE_FIM_FACA_ENQUANTO}   {return token_fimFacaEnquanto;}
 {PA_RE_ENQUANTO}            {return token_enquanto;}
 {PA_RE_FACA}                {return token_faca;}
 {PA_RE_FIM_ENQUANTO}        {return token_fimEnquanto;}
@@ -124,8 +124,8 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_FUNCAO}              {return token_funcao;}
 {PA_RE_RETORNE}             {return token_retorne;}
 {PA_RE_PASSO}               {return token_passo;}
-{PA_RE_SWITCH}              {return token_switch;}
-{PA_RE_FIM_SWITCH}          {return token_fimSwitch;}
+{PA_RE_AVALIE}              {return token_avalie;}
+{PA_RE_FIM_AVALIE}          {return token_fimAvalie;}
 {PA_RE_CASO}                {return token_caso;}
 {PA_RE_PARE}                {return token_pare;}
 
@@ -184,8 +184,6 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
                                                     BEGIN(comment_caller);
                                                 }
 <comment>.                                      { /*se nao encontrar o final do comentario, volta ao inicio avaliando normalmente */
-                                                    printf ("/: OPERADORARITMETICO\n");
-                                                    printf ("*: OPERADORARITMETICO\n");
-                                                    BEGIN(comment_caller);
+                                                    return;
                                                 }
 %%

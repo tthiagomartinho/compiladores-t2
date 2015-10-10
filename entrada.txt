@@ -2,12 +2,14 @@ algoritmo teste;
 
 variaveis
     m1 : matriz[3] de inteiro;
+    m1 : inteiro;
+    m1, m2, m3, m4 : logico;
 fim-variaveis
 
 
 inicio
     x = 2 + a * 8;
-    y = triste ou x  == (vida e bela == 7) + 7;
+    y = triste ou x  == (vida e bela >= 7) <= 7;
 
     enquanto x == 2 faca
     	x = 2 + 3;
@@ -25,14 +27,16 @@ inicio
     			senao
     				j = j--;
     				imprima(soma(3,2), 1 - 2, 5, "hello world", 7^5, 10^teste, multiplica(4,5));
-                    k[y] = r[2]; 
+                    k[y] =  7; 
                     k[2][3] = 3;
                     k[2][3] = -3;
                     k[2][3] = 1.7;
                     k[2][3][4][5][6] = -1.74654;
                     k[2][3] = "a vida";
-                    k[2][3] = r[2];
-                    k[y] = r[2][3];
+                    k[2][3] = r[2] 7;
+                    k[y] = r[2];
+                    x = r[2];
+                    x = r[2] * 7;
                     x = 10 - (-10);
     				somatorio = soma(1, 2);
     				w = "a vida nao eh bela";
@@ -94,6 +98,27 @@ inicio
 fim
 
 funcao soma() : inteiro 
+inicio
+	retorne;
+fim
+
+funcao soma(x : inteiro, y : inteiro):
+	res : inteiro;
+	string : literal;
+	k, w, z, r : inteiro;
+	mat : matriz[1][1][1][1][1] de inteiro;
+inicio
+	res = x + y;
+	retorne res;
+fim
+
+funcao soma():
+inicio
+	res = x + y;
+	retorne res;
+fim
+
+funcao soma():
 inicio
 	retorne;
 fim
