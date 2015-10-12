@@ -39,6 +39,7 @@ PA_RE_PARA "para"
 PA_RE_ATE "ate"
 PA_RE_FIM_PARA "fim-para"
 PA_RE_FUNCAO "funcao"
+PA_RE_FIM_FUNCAO "fim-funcao"
 PA_RE_RETORNE "retorne"
 PA_RE_PASSO "passo"
 PA_RE_AVALIE "avalie"
@@ -122,6 +123,7 @@ SIMBOLO_ESPECIAL "\""|"."|"{"|"}"|"#"|"'"|"\\"
 {PA_RE_ATE}                 {return token_ate;}
 {PA_RE_FIM_PARA}            {return token_fimPara;}
 {PA_RE_FUNCAO}              {return token_funcao;}
+{PA_RE_FIM_FUNCAO}          {return token_fimFuncao;}
 {PA_RE_RETORNE}             {return token_retorne;}
 {PA_RE_PASSO}               {return token_passo;}
 {PA_RE_AVALIE}              {return token_avalie;}

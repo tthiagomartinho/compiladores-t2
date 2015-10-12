@@ -1,9 +1,7 @@
 algoritmo teste;
 
 variaveis
-    m1 : matriz[3] de inteiro;
-    m1 : inteiro;
-    m1, m2, m3, m4 : logico;
+    i, j : inteiro;
 fim-variaveis
 
 funcao soma(x : inteiro, y : inteiro) : inteiro 
@@ -15,17 +13,20 @@ inicio
     res = x + y;
     retorne res;
 fim
+fim-funcao
 
 funcao soma() : inteiro 
 inicio
     res = x + y;
     retorne res;
 fim
+fim-funcao
 
 funcao soma() : inteiro 
 inicio
     retorne;
 fim
+fim-funcao
 
 funcao soma(x : inteiro, y : inteiro):
     res : inteiro;
@@ -36,17 +37,20 @@ inicio
     res = x + y;
     retorne res;
 fim
+fim-funcao
 
 funcao soma():
 inicio
     res = x + y;
     retorne res;
 fim
+fim-funcao
 
 funcao soma():
 inicio
     retorne;
 fim
+fim-funcao
 
 inicio
     x = 2 + 5^7 e verdadeiro;

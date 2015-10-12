@@ -35,6 +35,7 @@
 %token token_ate
 %token token_fimPara
 %token token_funcao
+%token token_fimFuncao
 %token token_retorne
 %token token_passo
 %token token_avalie
@@ -102,20 +103,20 @@ VARIAVEIS
     ;
 
 DECLARACAO_VARIAVEL
-    : DECLARACAO_VARIAVEL token_identificador token_simboloVirgula 
-    | DECLARACAO_VARIAVEL token_identificador token_simboloDoisPontos TIPO_VARIAVEIS token_simboloPontoVirgula
+    : token_identificador token_simboloVirgula DECLARACAO_VARIAVEL
+    | token_identificador token_simboloDoisPontos TIPO_VARIAVEIS token_simboloPontoVirgula DECLARACAO_VARIAVEL
     | token_identificador token_simboloDoisPontos TIPO_VARIAVEIS token_simboloPontoVirgula
     ;
 
 DECLARACAO_FUNCAO
-    : DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
-    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
-    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
-    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
-    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
-    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
-    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO
-    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO
+    : DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO token_fimFuncao
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO token_fimFuncao
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO token_fimFuncao
+    | DECLARACAO_FUNCAO token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO token_fimFuncao
+    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO token_fimFuncao
+    | token_funcao token_identificador token_simboloAbreParentese PARAMETRO_DECLARACAO_FUNCAO token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO token_fimFuncao
+    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos TIPO_VARIAVEL_PRIMITIVO ROTINA_FUNCAO token_fimFuncao
+    | token_funcao token_identificador token_simboloAbreParentese token_simboloFechaParentese token_simboloDoisPontos ROTINA_FUNCAO token_fimFuncao
     ;
 
 PARAMETRO_DECLARACAO_FUNCAO
@@ -124,9 +125,8 @@ PARAMETRO_DECLARACAO_FUNCAO
     ;
 
 ROTINA_FUNCAO
-    : DECLARACAO_VARIAVEL token_inicio LISTA_COMANDOS COMANDO_RETORNO token_fim
-    | token_inicio LISTA_COMANDOS COMANDO_RETORNO token_fim
-    | token_inicio COMANDO_RETORNO token_fim
+    : DECLARACAO_VARIAVEL token_inicio LISTA_COMANDOS token_fim
+    | token_inicio LISTA_COMANDOS token_fim
     ;
 
 COMANDO_RETORNO
@@ -182,6 +182,8 @@ LISTA_COMANDOS
     | COMANDO_FACA_ENQUANTO
     | LISTA_COMANDOS COMANDO_AVALIE
     | COMANDO_AVALIE
+    | LISTA_COMANDOS COMANDO_RETORNO
+    | COMANDO_RETORNO
     ;
 
 COMANDO_ATRIBUICAO
@@ -234,6 +236,8 @@ COMANDO_IMPRIMA
 PARAMETROS_FUNCAO_IMPRIMA
     : EXPRESSAO token_simboloVirgula PARAMETROS_FUNCAO_IMPRIMA
     | EXPRESSAO
+    | COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETROS_FUNCAO_IMPRIMA
+    | COMANDO_CHAMADA_FUNCAO
     ;
 
 COMANDO_CHAMADA_FUNCAO
@@ -271,6 +275,7 @@ FATOR
     | token_verdadeiro
     | token_falso
     | token_literal
+    | token_caractere
     | token_simboloAbreParentese EXPRESSAO token_simboloFechaParentese
     ;
 

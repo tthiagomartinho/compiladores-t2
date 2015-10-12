@@ -54,6 +54,8 @@ Nesta seção, estão listadas e descritas todas as operações suportadas pela 
 \subsection{Declaração de Variáveis}
 A declaração de variáveis é feita da forma como está presente no manual da linguagem, com exceção da definição do tipo matriz. Neste trabalho, foi considerado que uma matriz é composta de \textit{n} dimensões e de um tipo. Esse tipo, na definição original da ferramenta, deveria ser escrito no plural, porém para nós ele deve ser declarado da mesma forma que uma variável não-matriz, ou seja, no singular.
 
+O bloco de declaração de variáveis é opcional na construção de um programa, entretanto se este bloco for inserido pelo menos uma variável deverá ser declarada.
+
 
 \subsection{Comandos de Seleção}
 Os comandos de seleção presentes na linguagem são o \textit{se-entao-senao-fim-se} e o \textit{avalie-caso-pare-fim-avalie}.
@@ -72,11 +74,14 @@ A única exceção para declarações de funções é relativo a posição delas
 
 Não é possível declarar funções de nomes \textit{leia} e \textit{imprima} por serem reservadas da linguagem.
 
+Todas as funções devem possuir uma instrução de retorno e estas não podem conter combinações de chamadas de outras funções com expressões lógicas e/ou aritméticas. Para mais detalhes consulte a seção \ref{atribuicoes}.
+
 \subsection{Chamada de Funções}
 As chamadas de funções podem conter expressões, outras funções, variáveis, literais, valores lógicos, inteiros ou reais como parâmetro. Nessa fase de construção do compilador, não é verificado se existe ou não uma função declarada correspondente.
 
 \subsection{Atribuições}
-Nosso analisador sintático verificará tanto operações aritméticas como operações lógicas (ou relacionais). Durante essa fase de avaliação do compilador, expressões que podem não fazer sentido também são aceitas, uma vez que estão escritas na forma correta. O sentido da expressão será avaliado no próximo trabalho (analisador semântico).
+\label{atribuicoes}
+Nosso analisador sintático verificará tanto operações aritméticas como operações lógicas (ou relacionais). Durante essa fase de avaliação do compilador, expressões que podem não fazer sentido também são aceitas, uma vez que estão escritas na forma correta. O sentido da expressão será avaliado no próximo trabalho (analisador semântico). Não são aceitas operações que incluem chamadas de funções combinadas com expressões aritméticas ou lógicas como por exemplo \textit{x + fatoria(2);}.
 
 Alguns exemplos de expressões incorretas mas que são aceitas pelo analisador sintático são:
 
