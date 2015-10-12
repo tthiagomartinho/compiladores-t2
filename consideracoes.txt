@@ -1,8 +1,0 @@
-* O programa pode ou não ter declaração de variável;
-* Expressões lógicas e aritméticas combinadas são possíves segundo a gramática
-* Existe um tipo matriz que pode ter n dimensões cujo tipo é declarado também no singular
-* Utilização de % para módulo
-* Utilização de ^ para potência
-* Uma declaração de função pode ter ou não variáveis
-* Uma função pode ser chamada tendo funções como parâmetros
-* 

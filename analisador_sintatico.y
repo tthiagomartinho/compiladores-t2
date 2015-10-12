@@ -184,6 +184,8 @@ LISTA_COMANDOS
     | COMANDO_AVALIE
     | LISTA_COMANDOS COMANDO_RETORNO
     | COMANDO_RETORNO
+    | LISTA_COMANDOS COMANDO_MAIS_MAIS_MENOS_MENOS
+    | COMANDO_MAIS_MAIS_MENOS_MENOS
     ;
 
 COMANDO_ATRIBUICAO
@@ -194,6 +196,8 @@ COMANDO_ATRIBUICAO
 VALOR_A_SER_ATRIBUIDO
     : VALOR_A_SER_ATRIBUIDO EXPRESSAO 
     | EXPRESSAO
+    | VALOR_A_SER_ATRIBUIDO COMANDO_CHAMADA_FUNCAO
+    | COMANDO_CHAMADA_FUNCAO
     ;
 
 COMANDO_ENQUANTO
@@ -226,17 +230,17 @@ AVALIE_CASO
     ;
 
 COMANDO_LEIA
-    : token_leia token_simboloAbreParentese token_simboloFechaParentese token_simboloPontoVirgula
+    : token_identificador token_operadorAtribuicao token_leia token_simboloAbreParentese token_simboloFechaParentese token_simboloPontoVirgula
     ;
 
 COMANDO_IMPRIMA
-    : token_imprima token_simboloAbreParentese PARAMETROS_FUNCAO_IMPRIMA token_simboloFechaParentese token_simboloPontoVirgula
+    : token_imprima token_simboloAbreParentese PARAMETROS_FUNCAO token_simboloFechaParentese token_simboloPontoVirgula
     ;
 
-PARAMETROS_FUNCAO_IMPRIMA
-    : EXPRESSAO token_simboloVirgula PARAMETROS_FUNCAO_IMPRIMA
+PARAMETROS_FUNCAO
+    : PARAMETROS_FUNCAO token_simboloVirgula EXPRESSAO  
     | EXPRESSAO
-    | COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETROS_FUNCAO_IMPRIMA
+    | PARAMETROS_FUNCAO token_simboloVirgula COMANDO_CHAMADA_FUNCAO  
     | COMANDO_CHAMADA_FUNCAO
     ;
 
@@ -245,11 +249,11 @@ COMANDO_CHAMADA_FUNCAO
     | token_identificador token_simboloAbreParentese PARAMETROS_FUNCAO token_simboloFechaParentese
     ;
 
-PARAMETROS_FUNCAO
-    : COMANDO_CHAMADA_FUNCAO token_simboloVirgula PARAMETROS_FUNCAO
-    | COMANDO_CHAMADA_FUNCAO
-    | EXPRESSAO token_simboloVirgula PARAMETROS_FUNCAO
-    | EXPRESSAO
+COMANDO_MAIS_MAIS_MENOS_MENOS
+    : token_identificador token_operadorSomaSoma token_simboloPontoVirgula
+    | token_operadorSomaSoma token_identificador token_simboloPontoVirgula
+    | token_identificador token_operadorSubtraiSubtrai token_simboloPontoVirgula
+    | token_operadorSubtraiSubtrai token_identificador token_simboloPontoVirgula
     ;
     
 EXPRESSAO

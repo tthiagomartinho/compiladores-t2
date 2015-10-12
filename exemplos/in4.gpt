@@ -1,0 +1,35 @@
+/*
+  Algoritmo Teste 4
+*/
+  
+algoritmo teste3;
+
+variaveis
+	i, j : inteiro;
+	x, y : inteiro;
+	l : logico;
+fim-variaveis
+
+
+inicio
+	x = leia();
+	y = x^2 ;
+	enquanto y > 0 faca
+		y--;
+		imprima("Tempo restante ", y);
+	fim-enquanto
+
+	faca:
+		y--;
+		imprima("Tempo restante ", y);
+	enquanto (y > 0)
+	fim-enquanto
+
+	x = x % y;
+
+	l = nao (x > 10) ou x < 10;
+	l = x == 3;
+
+	imprima("l eh ", l);
+
+fim
